@@ -474,6 +474,7 @@ def user_summary_charts():
     return render_template('user_summary_chart.html',chart_url=url_for('static', filename='charts/user_summary.png'))
 
 
+
 def initialize_admin():
     with app.app_context():
         if not Users.query.filter_by(role='admin').first():
