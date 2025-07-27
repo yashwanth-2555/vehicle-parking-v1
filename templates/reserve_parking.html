@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reserve Parking</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/style.css">
+    <style>
+        .background-blur {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0,0,0,0.6);
+            z-index: -1;
+            filter: blur(2px);
+        }
+    </style>
+</head>
+
+<div class="flash-padding">
+    {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }} alert-dismissible fade show fw-semibold" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+</div>
+
+<body>
+    <div class="background-blur"></div>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" style="color: #fff;" href="/user_dashboard">Parkup!</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-center" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" style="color: #fff;" href="/user_dashboard">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link active" style="color: #fff;" href="/reserve_parking">Reserve</a></li>
+                    <li class="nav-item"><a class="nav-link" style="color: #fff;" href="/login" onclick="return confirm('Are you sure to logout?');">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container" style="padding-top: 90px;">
+        <h1 class="text-center mb-4 text-white">Reserve a Parking Spot</h1>
+        <div class="card" style="border-radius: 15px;">
+            <div class="card-body">
+                {% if lots %}
+                <div class="table-responsive">
+                    <table class="table table-hover table-borderless text-white align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Lot ID</th>
+                                <th>Location</th>
+                                <th>Address</th>
+                                <th>Pincode</th>
+                                <th>Available Spots</th>
+                                <th>Price</th>
+                                <th>Vehicle Number</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for lot in lots %}
+                            <tr>
+                                <td>{{ lot.lot_id }}</td>
+                                <td>{{ lot.prime_location_name }}</td>
+                                <td>{{ lot.address }}</td>
+                                <td>{{ lot.pincode }}</td>
+                                <td>{{ lot.available_spots }}</td>
+                                <td>{{ lot.price }}</td>
+                                <td>
+                                    <form action="{{ url_for('reserve_parking') }}" method="POST" class="d-flex flex-column flex-md-row align-items-start gap-2">
+                                        <input type="hidden" name="lot_id" value="{{ lot.lot_id }}">
+                                        <input type="text" name="vehicle_number" class="form-control form-control-sm" placeholder="Vehicle Number" required style="width: 120px;">
+                                        <button type="submit" class="btn btn-success btn-sm">Reserve</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-center text-white">No parking lots with available spots at the moment.</p>
+                {% endif %}
+                <div class="text-center mt-4">
+                    <a href="{{ url_for('user_dashboard') }}" class="btn btn-outline-light">Back to Dashboard</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
