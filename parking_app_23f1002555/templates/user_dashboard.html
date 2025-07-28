@@ -97,7 +97,7 @@
                       <td>{{ reservation.vehicle_number }}</td>
                       <td>{{ reservation.parking_spot.parking_lot.prime_location_name }}</td>
                       <td>{{ reservation.parking_spot.parking_lot.address }}</td>
-                      <td>{{ reservation.parked_at }}</td>
+                      <td>{{ reservation.parked_at.strftime('%d-%m-%Y %H:%M:%S') }}</td>
                       <td>
                         <form action="{{ url_for('release_parking_spot') }}" method="POST">
                           <input type="hidden" name="spot_id" value="{{ reservation.parking_spot_id }}">
@@ -147,8 +147,8 @@
                       <td>{{ reservation.vehicle_number }}</td>
                       <td>{{ reservation.parking_spot.parking_lot.prime_location_name }}</td>
                       <td>{{ reservation.parking_spot.parking_lot.address }}</td>
-                      <td>{{ reservation.parked_at }}</td>
-                      <td>{{ reservation.released_at }}</td>
+                      <td>{{ reservation.parked_at.strftime('%d-%m-%Y %H:%M:%S') }}</td>
+                      <td>{{ reservation.released_at.strftime('%d-%m-%Y %H:%M:%S') }}</td>
                     </tr>
                       {% endif %}
                     {% endfor %}

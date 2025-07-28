@@ -180,8 +180,12 @@
                       <td>{{ reservation.vehicle_number }}</td>
                       <td>{{ reservation.parking_spot.parking_lot.prime_location_name }}</td>
                       <td>{{ reservation.parking_spot.parking_lot.address }}</td>
-                      <td>{{ reservation.parked_at }}</td>
+                      <td>{{ reservation.parked_at.strftime('%d-%m-%Y %H:%M:%S') }}</td>
+                      {% if reservation.released_at %}
+                      <td>{{ reservation.released_at.strftime('%d-%m-%Y %H:%M:%S') }}</td>
+                      {% else %}
                       <td>{{ reservation.released_at }}</td>
+                      {% endif %}
                     </tr>
                     {% endfor %}
                 {% else %}

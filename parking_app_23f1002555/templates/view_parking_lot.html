@@ -71,7 +71,11 @@
               <tr>
                 <td>{{ spot.parking_lot_id }}</td>
                 <td>{{ spot.spot_id }}</td>
-                <td>{{ spot.parked_at }}</td>
+                {% if spot.parked_at %}
+                <td>{{ spot.parked_at.strftime('%d-%m-%Y %H:%M:%S') }}</td>
+                {% else %}
+               <td>{{ spot.parked_at }}</td>
+               {% endif %}
                 <td>{{ spot.status }}</td>
               </tr>
               {% endfor %}

@@ -19,8 +19,6 @@ def home():
       return render_template('home.html')
 
 
-
-
 @app.route('/register',methods=['GET','POST'])
 def register():
 	if request.method=='POST':
@@ -432,7 +430,7 @@ def user_summary_charts():
     time = list(lot_time_map.values())
 
     for i in range(0,len(time)):
-        time[i]=math.ceil(time[i]/60)
+        time[i]=round(time[i]/60,2)
 
     fig, ax = plt.subplots(figsize=(10, 6), facecolor='none')
 
@@ -472,7 +470,6 @@ def user_summary_charts():
     plt.close()
 
     return render_template('user_summary_chart.html',chart_url=url_for('static', filename='charts/user_summary.png'))
-
 
 
 def initialize_admin():
